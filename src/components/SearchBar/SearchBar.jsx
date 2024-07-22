@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import styles from './SearchBar.module.css';
 
 const SearchBar = ({ onSubmit }) => {
@@ -11,6 +12,7 @@ const SearchBar = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim() === '') {
+      toast.error('Please enter a search query.');
       return;
     }
     onSubmit(query);
@@ -35,3 +37,4 @@ const SearchBar = ({ onSubmit }) => {
 };
 
 export default SearchBar;
+

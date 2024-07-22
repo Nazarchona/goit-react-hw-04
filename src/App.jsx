@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import SearchBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Loader from './components/Loader/Loader';
@@ -8,8 +8,6 @@ import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 import ImageModal from './components/ImageModal/ImageModal';
 import './App.css';
-
-const API_KEY = '2xQEPcvz7hAKpqTVqrBkmdPrzrBDJ8AQpOXbU3nAVzs'; // Замініть на ваш ключ доступу
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -20,22 +18,16 @@ const App = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
-    if (query === '') return;
+    if (!query) return;
 
     const fetchImages = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await axios.get('https://api.unsplash.com/search/photos', {
-          params: {
-            query,
-            page,
-            per_page: 12,
-            client_id: API_KEY,
-          },
-        });
-
+        const response = await axios.get(
+          `https://api.unsplash.com/search/photos?query=${query}&page=${page}&client_id=2xQEPcvz7hAKpqTVqrBkmdPrzrBDJ8AQpOXbU3nAVzs`
+        );
         setImages((prevImages) => [...prevImages, ...response.data.results]);
       } catch (err) {
         setError('Failed to fetch images');
@@ -48,11 +40,9 @@ const App = () => {
   }, [query, page]);
 
   const handleSearchSubmit = (newQuery) => {
-    if (query !== newQuery) {
-      setQuery(newQuery);
-      setImages([]);
-      setPage(1);
-    }
+    setQuery(newQuery);
+    setPage(1);
+    setImages([]);
   };
 
   const handleLoadMore = () => {
@@ -63,23 +53,22 @@ const App = () => {
     setSelectedImage(image);
   };
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setSelectedImage(null);
   };
 
   return (
     <div className="app">
+      <Toaster position="top-right" reverseOrder={false} />
       <SearchBar onSubmit={handleSearchSubmit} />
-      <Toaster />
       {error && <ErrorMessage message={error} />}
       <ImageGallery images={images} onImageClick={handleImageClick} />
       {isLoading && <Loader />}
       {images.length > 0 && !isLoading && <LoadMoreBtn onClick={handleLoadMore} />}
-      {selectedImage && (
-        <ImageModal isOpen={!!selectedImage} onClose={handleCloseModal} image={selectedImage} />
-      )}
+      {selectedImage && <ImageModal image={selectedImage} onClose={closeModal} />}
     </div>
   );
 };
 
 export default App;
+
