@@ -3,13 +3,14 @@
   flex-wrap: wrap;
   gap: 16px;
   justify-content: center;
-  width: 140%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .galleryItem {
-  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-li{
-    list-style: none;
-}

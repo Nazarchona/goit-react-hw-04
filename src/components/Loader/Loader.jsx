@@ -1,19 +1,16 @@
 import React from 'react';
-import { TailSpin } from 'react-loader-spinner';
 import styles from './Loader.module.css';
+import { Circles } from 'react-loader-spinner';
 
-const Loader = () => (
-  <div className={styles.loader}>
-    <TailSpin
-      height="80"
-      width="80"
-      color="#4fa94d"
-      ariaLabel="tail-spin-loading"
-      radius="1"
-      visible={true}
-    />
-  </div>
-);
+function Loader() {
+  return (
+    <div className={styles.Loader}>
+      <Circles color="#00BFFF" height={80} width={80} />
+    </div>
+  );
+}
 
 export default Loader;
+
+
 
